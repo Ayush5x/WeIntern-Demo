@@ -1,8 +1,22 @@
 // ======================================================
-// NAVBAR BACKGROUND
+// NAVBAR + MOBILE MENU + SMOOTH SCROLL
 // ======================================================
 
-const navbar = document.querySelector(".navbar");
+const navbar =
+    document.querySelector(".navbar");
+
+const menuToggle =
+    document.getElementById("menuToggle");
+
+const navLinks =
+    document.getElementById("navLinks");
+
+const menuIcon =
+    menuToggle.querySelector("i");
+
+// ======================================================
+// STICKY NAVBAR
+// ======================================================
 
 window.addEventListener("scroll", () => {
 
@@ -18,46 +32,117 @@ window.addEventListener("scroll", () => {
 });
 
 // ======================================================
+// MOBILE MENU TOGGLE
+// ======================================================
+
+menuToggle.addEventListener("click", () => {
+
+    navLinks.classList.toggle("active");
+
+    if (navLinks.classList.contains("active")) {
+
+        menuIcon.classList.remove(
+            "ri-menu-3-line"
+        );
+
+        menuIcon.classList.add(
+            "ri-close-line"
+        );
+
+    } else {
+
+        menuIcon.classList.remove(
+            "ri-close-line"
+        );
+
+        menuIcon.classList.add(
+            "ri-menu-3-line"
+        );
+    }
+
+});
+
+// ======================================================
+// SMOOTH SCROLL + CLOSE MOBILE MENU
+// ======================================================
+
+document.querySelectorAll(".nav-links a")
+.forEach(link => {
+
+    link.addEventListener("click", (e) => {
+
+        const targetId =
+            link.getAttribute("href");
+
+        if (
+            targetId.startsWith("#") &&
+            targetId !== "#"
+        ) {
+
+            e.preventDefault();
+
+            const targetSection =
+                document.querySelector(targetId);
+
+            if (targetSection) {
+
+                targetSection.scrollIntoView({
+
+                    behavior: "smooth"
+                });
+
+            }
+
+        }
+
+        // CLOSE MOBILE MENU
+
+        navLinks.classList.remove("active");
+
+        menuIcon.classList.remove(
+            "ri-close-line"
+        );
+
+        menuIcon.classList.add(
+            "ri-menu-3-line"
+        );
+
+    });
+
+});
+
+// ======================================================
 // SCROLL REVEAL ANIMATION
 // ======================================================
 
-const revealElements = document.querySelectorAll(
-    ".about-card, .track-card, .stat-box, .cta-box, .main-card"
-);
+const revealElements =
+    document.querySelectorAll(
+        ".about-card, .track-card, .stat-box, .tech-card, .cta-box, .main-card"
+    );
+
+revealElements.forEach((element) => {
+
+    element.classList.add("reveal");
+});
 
 const revealOnScroll = () => {
 
-    revealElements.forEach((element, index) => {
+    revealElements.forEach((element) => {
 
-        const windowHeight = window.innerHeight;
-
-        const revealTop =
+        const elementTop =
             element.getBoundingClientRect().top;
 
-        if (revealTop < windowHeight - 80) {
+        const windowHeight =
+            window.innerHeight;
 
-            element.style.opacity = "1";
+        if (elementTop < windowHeight - 100) {
 
-            element.style.transform =
-                "translateY(0)";
-
+            element.classList.add("active");
         }
 
     });
 
 };
-
-revealElements.forEach((element, index) => {
-
-    element.style.opacity = "0";
-
-    element.style.transform =
-        "translateY(50px)";
-
-    element.style.transition =
-        `all 0.8s ease ${index * 0.08}s`;
-
-});
 
 window.addEventListener(
     "scroll",
@@ -114,31 +199,30 @@ cards.forEach((card) => {
         const rotateX =
             ((y / rect.height) - 0.5) * -8;
 
-        card.style.transform =
-            `
+        card.style.transform = `
             perspective(1000px)
             rotateX(${rotateX}deg)
             rotateY(${rotateY}deg)
             translateY(-6px)
-            `;
+        `;
+
     });
 
     card.addEventListener("mouseleave", () => {
 
-        card.style.transform =
-            `
+        card.style.transform = `
             perspective(1000px)
             rotateX(0deg)
             rotateY(0deg)
             translateY(0)
-            `;
+        `;
 
     });
 
 });
 
 // ======================================================
-// FLOATING ANIMATION ENHANCEMENT
+// FLOATING CARD ANIMATION
 // ======================================================
 
 const floatingCards =
@@ -152,49 +236,55 @@ floatingCards.forEach((card, index) => {
 });
 
 // ======================================================
-// HERO PARALLAX EFFECT
-// ======================================================
-// ======================================================
-// PREMIUM HERO CARD INTERACTION
+// HERO CARD INTERACTION
 // ======================================================
 
-const heroCard = document.querySelector(".main-card");
+const heroCard =
+    document.querySelector(".main-card");
 
-heroCard.addEventListener("mousemove", (e) => {
+if (heroCard) {
 
-    const rect = heroCard.getBoundingClientRect();
+    heroCard.addEventListener("mousemove", (e) => {
 
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+        const rect =
+            heroCard.getBoundingClientRect();
 
-    const rotateY = ((x / rect.width) - 0.5) * 10;
-    const rotateX = ((y / rect.height) - 0.5) * -10;
+        const x =
+            e.clientX - rect.left;
 
-    heroCard.style.transform = `
-        perspective(1200px)
-        rotateX(${rotateX}deg)
-        rotateY(${rotateY}deg)
-        translateY(-6px)
-    `;
+        const y =
+            e.clientY - rect.top;
 
-});
+        const rotateY =
+            ((x / rect.width) - 0.5) * 10;
 
-heroCard.addEventListener("mouseleave", () => {
+        const rotateX =
+            ((y / rect.height) - 0.5) * -10;
 
-    heroCard.style.transform = `
-        perspective(1200px)
-        rotateX(0deg)
-        rotateY(0deg)
-        translateY(0px)
-    `;
+        heroCard.style.transform = `
+            perspective(1200px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            translateY(-6px)
+        `;
 
-});
+    });
 
+    heroCard.addEventListener("mouseleave", () => {
 
+        heroCard.style.transform = `
+            perspective(1200px)
+            rotateX(0deg)
+            rotateY(0deg)
+            translateY(0px)
+        `;
 
+    });
+
+}
 
 // ======================================================
-// SMOOTH COUNTER ANIMATION
+// COUNTER ANIMATION
 // ======================================================
 
 const counters =
@@ -244,6 +334,8 @@ window.addEventListener("scroll", () => {
 
     const statsSection =
         document.querySelector(".stats-section");
+
+    if (!statsSection) return;
 
     const sectionTop =
         statsSection.getBoundingClientRect().top;
